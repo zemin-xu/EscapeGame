@@ -5,6 +5,11 @@ using TMPro;
 
 public class PasswordPad : MonoBehaviour
 {
+    public Transform door;
+    public Transform targetPlace;
+    public float doorSpeed = 0.05f;
+    public bool debug = true;
+
     public int[] password;
     public List<TMP_Text> texts;
     private int[] input;
@@ -28,6 +33,7 @@ public class PasswordPad : MonoBehaviour
             bool res = VerifyPassword();
             if (res)
             {
+                StartCoroutine(OpenDoor());
                 // open the door
                 Debug.Log("correct");
                 return;
@@ -54,5 +60,16 @@ public class PasswordPad : MonoBehaviour
                 return false;
         }
         return true;
+    }
+
+    private IEnumerator OpenDoor()
+    {
+        while (true)
+        {
+            if (Vector3.Distance(door.position, targetPlace.position) < 0.01f)
+                break;
+            door.position = Vector3.MoveTowards(door.position, targetPlace.position, doorSpeed);
+            yield return null;
+        }
     }
 }
