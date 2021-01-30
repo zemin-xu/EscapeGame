@@ -6,6 +6,8 @@ public class Lock : MonoBehaviour
 {
     public bool hasKey = false;
 
+    public GameObject key;
+
     public Transform top;
 
     public void OnKeyGrabbed()
@@ -27,6 +29,7 @@ public class Lock : MonoBehaviour
 
     private IEnumerator OpenBox()
     {
+        key.SetActive(false);
         int i = 0;
         while (i < 45)
         {
