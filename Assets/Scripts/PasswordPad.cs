@@ -10,6 +10,9 @@ public class PasswordPad : MonoBehaviour
     public float doorSpeed = 0.05f;
     public bool debug = true;
 
+    public AudioSource rightSound;
+    public AudioSource wrongSound;
+
     public int[] password;
     public List<TMP_Text> texts;
     private int[] input;
@@ -17,8 +20,8 @@ public class PasswordPad : MonoBehaviour
 
     private void Start()
     {
-        input = new int[4];
-        input[0] = input[1] = input[2] = input[3] = 0;
+        input = new int[3];
+        input[0] = input[1] = input[2] = ' ';
         currIndex = 0;
     }
 
@@ -28,21 +31,23 @@ public class PasswordPad : MonoBehaviour
         input[currIndex] = i;
         texts[currIndex].text = i.ToString();
 
-        if (currIndex != 0 && currIndex % 3 == 0)
+        if (currIndex != 0 && currIndex % 2 == 0)
         {
             bool res = VerifyPassword();
             if (res)
             {
                 StartCoroutine(OpenDoor());
-                // open the door
-                Debug.Log("correct");
+
+                rightSound.Play();
+
                 return;
             }
             else
             {
                 currIndex = 0;
-                Debug.Log("wrong");
-                // wrong password, reset
+
+                texts[0].text = texts[1].text = texts[2].text = "";
+                wrongSound.Play();
                 return;
             }
         }
